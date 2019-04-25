@@ -1,6 +1,6 @@
 # kube-php
 
-Kubernetes dev env for PHPP/Apache, Postgresql, Redis.
+Kubernetes dev env for PHP/Apache, Postgresql, Redis.
 
 ## Requirements
 
