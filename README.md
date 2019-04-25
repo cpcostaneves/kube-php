@@ -116,7 +116,9 @@ eval $(minikube docker-env -u)
 
 Build PHP/Apache docker image with support for Redis and Postgresql.
 
+```
 docker build -t webserver:latest .
+```
 
 
 ## Deployments and Services
@@ -208,7 +210,7 @@ kubectl exec -it <PODNAME> -- /bin/bash
 
 ## Docker compose option
 
-In the docker-compose  directory there is a similar solution using docker-compose. To run it:
+In the docker-compose  directory there is a similar solution using docker-compose (required). To run it:
 ```
 docker-compose up
 ``` 
