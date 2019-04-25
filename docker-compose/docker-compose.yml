@@ -1,0 +1,75 @@
+#----------------------------------------------------------------------
+# File: docker-compose.yml
+# Author: Cristiano Pedrassani Costa Neves
+# Date: 25 apr 2019
+# Brief: docker-compose for Web Server.
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
+# Requirements
+# * Docker installed
+# * docker-compose installed
+
+#----------------------------------------------------------------------
+# Use
+# docker-compose -f docker-compose.yml up -d
+
+#----------------------------------------------------------------------
+version: '2.1'
+
+#----------------------------------------------------------------------
+# Networks
+networks:
+  webserver-net:
+    driver: bridge
+
+#----------------------------------------------------------------------
+# Volumes
+volumes:
+    webserver-db-data: {}
+
+#----------------------------------------------------------------------
+services:
+#----------------------------------------------------------------------
+  webserver:
+    build: "."
+    image: webserver:latest
+    container_name: webserver
+    privileged: true
+    volumes:
+      - "./src:/var/www/html/"
+    ports:
+      - "8000:80"
+    networks:
+      - webserver-net
+    environment:
+      ENV: "development"
+    depends_on:
+      - webserver-db
+      - webserver-mem
+
+#----------------------------------------------------------------------
+  webserver-mem:
+    image: redis:latest
+    container_name: webserver-mem
+    #ports:
+    #  - "6379:6379"
+    networks:
+      - webserver-net
+
+#----------------------------------------------------------------------
+  webserver-db:
+    image: postgres:latest
+    container_name: webserver-db
+    #ports:
+    #  - "5432:5432"
+    networks:
+      - webserver-net
+    volumes:
+    #  - ./docker/db/pgdata:/var/lib/postgresql/data
+      - webserver-db-data:/var/lib/postgresql/data
+    environment:
+        POSTGRES_DB: "service"
+        POSTGRES_USER: "service"
+        POSTGRES_PASSWORD: "mysecretpassword"
+
